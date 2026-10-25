@@ -312,7 +312,7 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
             )
             let emoticonImageResponse = try await HTTPClient.shared
                 .execute(emoticonImageRequest, timeout: .seconds(10))
-            let imageBuffer = try await emoticonImageResponse.body.collect(upTo: 15 * 1024)
+            let imageBuffer = try await emoticonImageResponse.body.collect(upTo: 1024 * 1024)
             let imageMimeType = emoticonImageResponse.headers["Content-Type"].first ?? "image/png"
 
             var matrixUploadEndpoint = user.matrixHomeserver
