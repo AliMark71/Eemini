@@ -297,9 +297,9 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
                     token: interaction.token,
                     payload: .init(
                         content: """
-                                    womp womp, I can't help with that 👉👈
-                                    you have to give a single emoji with nothing else,
-                                    or maybe I just can't handle that emoji 😳
+                                 womp womp, I can't help with that 👉👈
+                                 you have to give a single emoji with nothing else,
+                                 or maybe I just can't handle that emoji 😳
                                  """
                     )
                 ).guardSuccess()
