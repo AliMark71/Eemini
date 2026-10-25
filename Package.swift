@@ -23,6 +23,12 @@ let package = Package(
                 .product(name: "WebURL", package: "swift-url"),
                 .product(name: "DiscordBM", package: "DiscordBM"),
             ],
+            sources: [
+                "include/stb_image.h"
+            ],
+            cSettings: [
+                .define("STB_IMAGE_IMPLEMENTATION")
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
             ],
