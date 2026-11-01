@@ -437,7 +437,7 @@ struct UserEmotesData: Codable {
     var images: [String: Image]
 
     struct Metadata: Codable {
-        let displayName: String
+        let displayName: String?
         let attribution: String?
 
         enum CodingKeys: String, CodingKey {
