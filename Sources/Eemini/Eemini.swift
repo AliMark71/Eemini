@@ -5,7 +5,6 @@ import AsyncHTTPClient
 import DiscordBM
 import Foundation
 import WebURL
-import Foundation
 
 struct User {
     let discordId: UserSnowflake
@@ -162,7 +161,7 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
         // so if `interaction.user` is nil, we force-unwrap `interaction.member` instead,
         // and take the `user` from that
         //
-        // more over, the `user` property of `interaction.member` is nil only in `MESSAGE_CREATE` and
+        // moreover, the `user` property of `interaction.member` is nil only in `MESSAGE_CREATE` and
         // `MESSAGE_UPDATE` gateway events. so we are force-unwraping that too.
         let discordUser = interaction.user ?? interaction.member!.user!
         let userDiscordId = discordUser.id
