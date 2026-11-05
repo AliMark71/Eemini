@@ -4,6 +4,7 @@
 import AsyncHTTPClient
 import DiscordBM
 import Foundation
+import RegexBuilder
 import WebURL
 
 struct User {
@@ -286,10 +287,21 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
                 return
             }
 
-            let discordEmoticonPattern = /<:(?<name>[A-Za-z0-9]{2,32}):(?<id>\d+)>/
+            // it would've been cool if `RegexBuilder` was able to produce named tuple results :/
+            typealias DiscordEmoticonType = (Substring, isAnimated: Bool, name: Substring, id: Substring)
+            let discordEmoticonPattern = Regex {
+                "<"
+                // animated when "a" exists
+                Capture { Optionally { "a" } } transform: { !$0.isEmpty }
+                ":"
+                Capture { /[A-Za-z0-9]{2,32}/ }
+                ":"
+                Capture { /\d+/ }
+                ">"
+            }
             let discordEmoticonRaw = try command.option(named: "emoticon")!.requireString()
 
-            guard let discordEmoticon = discordEmoticonRaw
+            guard let discordEmoticon: DiscordEmoticonType  = discordEmoticonRaw
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .wholeMatch(of: discordEmoticonPattern)?.output else {
                 try await client.updateOriginalInteractionResponse(
@@ -305,14 +317,14 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
                 return
             }
 
-
+            let fileExtension = discordEmoticon.isAnimated ? "gif" : "png"
             let emoticonImageRequest = HTTPClientRequest(
-                url: "https://cdn.discordapp.com/emojis/\(discordEmoticon.id).png?size=512",
+                url: "https://cdn.discordapp.com/emojis/\(discordEmoticon.id).\(fileExtension)?size=512",
             )
             let emoticonImageResponse = try await HTTPClient.shared
                 .execute(emoticonImageRequest, timeout: .seconds(10))
             let imageBuffer = try await emoticonImageResponse.body.collect(upTo: 1024 * 1024)
-            let imageMimeType = emoticonImageResponse.headers["Content-Type"].first ?? "image/png"
+            let imageMimeType = emoticonImageResponse.headers["Content-Type"].first ?? "image/\(fileExtension)"
 
             var matrixUploadEndpoint = user.matrixHomeserver
             matrixUploadEndpoint.pathComponents += ["_matrix", "media", "v3", "upload"]
