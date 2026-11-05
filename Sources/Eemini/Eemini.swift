@@ -383,7 +383,7 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
             }
 
             var w: CInt = 0, h: CInt = 0, comp: CInt = 0
-            guard stbi_info_from_memory(imageBuffer.readableBytesUInt8Span, &w, &h, &comp) != 0 else {
+            guard unsafe stbi_info_from_memory(imageBuffer.readableBytesUInt8Span, &w, &h, &comp) != 0 else {
                  try await client.updateOriginalInteractionResponse(
                      token: interaction.token,
                      payload: .init(
