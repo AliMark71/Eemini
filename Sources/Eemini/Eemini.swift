@@ -22,7 +22,7 @@ var users: [UserSnowflake: User] = [:]
 struct Eemini {
     static func main() async throws {
         func getTokenFromStdin() -> String {
-            print("Enter Discord Bot Token: ")
+            print("Enter Discord Bot Token:", terminator: " ")
             guard let token = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines) else {
                 print("Either set EEMINI_BOT_TOKEN or provide bot token from stdin")
                 exit(1)
