@@ -294,7 +294,7 @@ enum EeminiCommand: String, CaseIterable, CustomStringConvertible {
                 // animated when "a" exists
                 Capture { Optionally { "a" } } transform: { !$0.isEmpty }
                 ":"
-                Capture { /[A-Za-z0-9]{2,32}/ }
+                Capture { /[A-Za-z0-9_]{2,32}/ }
                 ":"
                 Capture { /\d+/ }
                 ">"
